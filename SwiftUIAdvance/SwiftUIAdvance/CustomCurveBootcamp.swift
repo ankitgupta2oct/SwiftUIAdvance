@@ -16,7 +16,7 @@ struct CustomCircle: Shape {
 struct HalfCapsule: Shape {
   func path(in rect: CGRect) -> Path {
     Path { path in
-      path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+      path.move(to: .zero)
       path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
       
       path.addArc(
