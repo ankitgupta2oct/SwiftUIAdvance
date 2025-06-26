@@ -4,7 +4,7 @@ import SwiftUI
 struct SwiftUIAdvanceApp: App {
     var body: some Scene {
         WindowGroup {
-          PropertyWrapperBootcamp()
+          GenericPropertyWrapperBootcamp()
         }
     }
 }

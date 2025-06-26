@@ -35,18 +35,18 @@ struct FileManagerProperty: DynamicProperty {
   init(wrappedValue: String, _ key: String) {
     self.key = key
     do {
-      print(NSHomeDirectory())
-      tittle = try String(contentsOf: FileManager.filePath(key: key), encoding: .utf8)
+      let tittleString = try String(contentsOf: FileManager.filePath(key: key), encoding: .utf8)
+      _tittle = State(wrappedValue: tittleString)
     } catch {
       print(error)
-      tittle = wrappedValue
+      _tittle = State(wrappedValue: wrappedValue)
     }
   }
     
   private func set(value: String) {
     do {
-      try tittle.write(to: FileManager.filePath(key: key), atomically: false, encoding: .utf8)
       tittle = value
+      try tittle.write(to: FileManager.filePath(key: key), atomically: false, encoding: .utf8)
     } catch {
       print("Error in set: \(error)")
     }
