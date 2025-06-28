@@ -35,6 +35,11 @@ struct GenericFileManagerProperty<T: Codable>: DynamicProperty {
       _value = State(wrappedValue: nil)
     }
   }
+  
+  init(_ path: KeyPath<GenericPropertyWrapperValue, FileManagerKeyPath<T>>) {
+    let keyPath = GenericPropertyWrapperValue.shared[keyPath: path]
+    self.init(keyPath.key)
+  }
     
   private func set(newValue: T?) {
     do {
@@ -49,7 +54,8 @@ struct GenericFileManagerProperty<T: Codable>: DynamicProperty {
 }
 
 struct GenericPropertyWrapperBootcamp: View {
-  @GenericFileManagerProperty("data-model") var dataModel: GenericPropertyWrapperModel?
+//  @GenericFileManagerProperty("data-model") var dataModel: GenericPropertyWrapperModel?
+  @GenericFileManagerProperty(\.userProfile) var dataModel
   
   var body: some View {
     VStack(spacing: 20) {
@@ -58,7 +64,7 @@ struct GenericPropertyWrapperBootcamp: View {
         dataModel = GenericPropertyWrapperModel(name: "Ankit", age: 20)
       }
       Button("Change Name") {
-        dataModel?.name = "New Name"
+        dataModel?.name = "Vishal"
       }
     }
   }
@@ -67,6 +73,20 @@ struct GenericPropertyWrapperBootcamp: View {
 struct GenericPropertyWrapperModel: Codable {
   var name: String
   let age: Int
+}
+
+final class GenericPropertyWrapperValue {
+  static let shared = GenericPropertyWrapperValue()
+  
+  let userProfile = FileManagerKeyPath(key: "user_profile", type: GenericPropertyWrapperModel.self)
+  
+  private init() {}
+  
+}
+
+struct FileManagerKeyPath<T:Codable> {
+  let key: String
+  let type: T.Type
 }
 
 #Preview {
